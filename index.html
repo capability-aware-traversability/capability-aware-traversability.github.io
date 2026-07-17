@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAT: Capability-Aware Traversability</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <meta name="description" content="CAT predicts dense traversability maps conditioned on the target robot's capabilities.">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="all">
+    <meta content="en_EN" property="og:locale">
+    <meta content="website" property="og:type">
+    <meta content="CAT: Capability-Aware Traversability" property="og:title">
+    <meta content="CAT predicts dense traversability maps conditioned on the target robot's capabilities." property="og:description">
+    <meta content="https://capability-aware-traversability.github.io/assets/figures/fig1.png" property="og:image">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="CAT predicts dense traversability maps conditioned on the target robot's capabilities.">
+    <meta name="twitter:image:src" content="https://capability-aware-traversability.github.io/assets/figures/fig1.png">
+
+    <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/main_free.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="clarity/clarity.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/cat.css" />
+    <link href="assets/fonts/fontawesome-free-7.2.0-web/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css"/>
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+</head>
+
+<body>
+    <!-- Title Page -->
+    <div class="container blog" id="first-content">
+        <div class="blog-title">
+            <div class="blog-intro">
+                <div>
+                    <h1 class="title"><span class="title-line">Towards Capability-Aware Traversability Navigation</span><span class="title-line">for Unstructured Environments</span></h1>
+                    <p class="author hero-venue">IROS 2026</p>
+                    <p class="author hero-authors">
+                        Gianluca Capezzuto, Felipe Tommaselli, Matheus P. Angarola, Ricardo V. Godoy, Marcelo Becker
+                    </p>
+                    <p class="author hero-affiliation">
+                        Mobile Robotics Group, University of São Paulo, São Carlos, SP, Brazil
+                    </p>
+                    <p class="author hero-corresponding">
+                        Corresponding author: <a href="mailto:gianlucacapezzuto@usp.br">gianlucacapezzuto@usp.br</a>
+                    </p>
+                    <div class="info hero-links" aria-label="Project resources">
+                        <span class="button icon is-disabled" aria-disabled="true" title="Paper coming soon">Paper <span class="coming-soon">Coming soon</span> <i class="fa-regular fa-file-lines" aria-hidden="true"></i></span>
+                        <span class="button icon is-disabled" aria-disabled="true" title="arXiv coming soon">arXiv <span class="coming-soon">Coming soon</span> <span class="resource-icon arxiv-icon" aria-hidden="true"><img src="assets/icons/arxiv.svg" alt=""></span></span>
+                        <span class="button icon is-disabled" aria-disabled="true" title="Code coming soon">Code <span class="coming-soon">Coming soon</span> <i class="fa-solid fa-code" aria-hidden="true"></i></span>
+                        <a href="#citation" class="button icon" hidden>BibTeX <i class="fa-solid fa-quote-left" aria-hidden="true"></i></a>
+                    </div>
+                    <figure class="hero-teaser">
+                        <img src="assets/figures/fig1.png" alt="Teaser: a wheeled robot and a Spot quadruped face the same staircase, each with its own predicted traversability map">
+                        <figcaption class="hero-teaser-caption"><strong>Capability-Aware Traversability.</strong> The same terrain receives different navigation costs for different robot profiles.</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="site-main">
+    <!-- One Scene, Two Robots -->
+    <section class="container blog main first research-section" id="blog-main" aria-labelledby="one-scene-two-robots">
+        <h2 id="one-scene-two-robots">
+            One Scene, Two Robots
+        </h2>
+        <p class="text">
+            The RGB-D observation stays fixed. Switching from the wheeled to the legged profile expands CAT's prediction from flat pavement to the stairs and uneven ground.
+        </p>
+        <aside class="takeaway">One scene. Different robot capabilities. Different traversability maps.</aside>
+    </section>
+
+    <figure class="container blog extra-large robot-comparison" aria-labelledby="one-scene-two-robots">
+        <p class="interaction-hint" id="comparison-instructions">Drag the divider, or focus it and use the arrow keys, to compare robot profiles.</p>
+        <img-comparison-slider class="slider-container media-elevated media-comparison" tabindex="0" aria-label="Compare CAT predictions for wheeled and legged robot profiles" aria-describedby="comparison-instructions comparison-caption">
+            <figure slot="first" class="before">
+                <img src="assets/figures/fig5_pred_wheeled.png" alt="CAT traversability prediction with the wheeled profile: pavement is blue (traversable), stairs are red (obstacle)" loading="lazy" decoding="async">
+                <figcaption>Wheeled Profile</figcaption>
+            </figure>
+            <figure slot="second" class="after">
+                <img src="assets/figures/fig5_pred_legged.png" alt="CAT traversability prediction with the legged profile: the staircase turns blue (traversable)" loading="lazy" decoding="async">
+                <figcaption>Legged Profile</figcaption>
+            </figure>
+        </img-comparison-slider>
+
+        <div class="comparison-traces-block">
+            <div class="columns-2 comparison-traces">
+                <img src="assets/figures/fig5_trace_wheeled.png" alt="NaviTrace human annotation routing the wheeled robot around the stairs" loading="lazy" decoding="async">
+                <img src="assets/figures/fig5_trace_legged.png" alt="NaviTrace human annotation sending the legged robot up the stairs" loading="lazy" decoding="async">
+            </div>
+            <p class="caption" id="comparison-caption">
+                <strong>Capability-Conditioned Predictions.</strong> Top: CAT predictions for wheeled and legged profiles, with blue indicating high traversability and red indicating low traversability. Bottom: NaviTrace human traces route the wheeled robot around the stairs (left) and the legged robot over them (right).
+            </p>
+        </div>
+
+    </figure>
+
+    <!-- Real-World Deployment -->
+    <section class="container blog main research-section" aria-labelledby="deployment" hidden>
+        <h2 id="deployment">
+            Real-World Deployment
+        </h2>
+        <p class="text">CAT's predicted maps drove a simple greedy pure-pursuit planner on two physical platforms.</p>
+    </section>
+
+    <figure class="container blog extra-large research-figure" hidden>
+        <img class="media-elevated" src="assets/figures/fig6.png" alt="Executed paths projected into onboard images: Spot goes around a tree and TerraSentia turns away from stairs" loading="lazy" decoding="async">
+        <figcaption class="caption">
+            <strong>Real-World Deployment.</strong> Executed paths are projected into the onboard image. Spot uses the legged profile to pass around a tree (left); TerraSentia uses the wheeled profile to turn away from stairs (right).
+        </figcaption>
+    </figure>
+
+    <div class="container blog main deployment-summary" hidden>
+        <ul class="compact-points">
+            <li><strong>Spot, legged profile:</strong> 10/10 collision-free forest runs.</li>
+            <li><strong>TerraSentia, wheeled profile:</strong> avoided the staircase in 7/10 trials.</li>
+            <li><strong>Onboard rate:</strong> 4.8 Hz on a Jetson Orin Nano.</li>
+        </ul>
+        <p class="figure-note">The three TerraSentia failures came from the greedy planner cutting through a correctly masked hazard.</p>
+    </div>
+
+    <!-- How CAT Works -->
+    <section class="container blog main research-section" aria-labelledby="how-cat-works">
+        <h2 id="how-cat-works">
+            How CAT Works
+        </h2>
+        <p class="text">CAT embeds robot-specific constraints in the spatial representation:</p>
+        <ul class="compact-points">
+            <li><strong>Visual features.</strong> Frozen DINOv3 encodes RGB and depth.</li>
+            <li><strong>Terrain semantics.</strong> Frozen CLIPSeg maps terrain prompts to per-pixel probabilities.</li>
+            <li><strong>Capability modulation.</strong> A robot vector rescales semantic channels that condition the SPADE decoder.</li>
+            <li><strong>Traversability readout.</strong> Each spatial feature is compared with a robot-specific prototype using cosine similarity.</li>
+        </ul>
+    </section>
+
+    <figure class="container blog extra-large research-figure">
+        <img class="media-flat" src="assets/figures/fig2.png" alt="CAT architecture: frozen DINOv3 and CLIPSeg feed a robot-vector-modulated SPADE decoder producing per-robot traversability maps" loading="lazy" decoding="async">
+        <figcaption class="caption">
+            <strong>CAT Architecture.</strong> RGB-D features and robot-modulated semantic terrain maps meet in a trainable SPADE decoder. Similarity to the selected robot's prototype produces the dense traversability map.
+        </figcaption>
+    </figure>
+
+    <!-- Trajectory-Grounded Supervision -->
+    <section class="container blog main research-section" aria-labelledby="trajectory-supervision">
+        <h2 id="trajectory-supervision">
+            Trajectory-Grounded Supervision
+        </h2>
+        <p class="text">Physical trajectories anchor dense masks to terrain that robots successfully traversed.</p>
+        <ul class="compact-points">
+            <li>Project each robot's trajectory into the aligned camera view.</li>
+            <li>Combine GroundingDINO boxes with trajectory point prompts for SAM 2.</li>
+            <li>Propagate the dense masks through video.</li>
+            <li>Send low-confidence or temporally inconsistent frames for human refinement.</li>
+        </ul>
+    </section>
+
+    <div class="container blog extra-large supervision-media-grid">
+        <figure class="research-figure supervision-media-item">
+            <video class="media-elevated media-video" autoplay loop muted playsinline controls preload="metadata" aria-label="Dense trajectory-grounded masks propagated through a video sequence">
+                <source src="assets/videos/masks.mp4" type="video/mp4">
+            </video>
+            <figcaption class="caption">
+                <strong>Mask Propagation Over Time.</strong> A trajectory-guided mask is propagated across successive frames; uncertain frames return to the human refinement loop.
+            </figcaption>
+        </figure>
+
+        <figure class="research-figure supervision-media-item">
+            <img class="media-flat" src="assets/figures/fig3.png" alt="Annotation pipeline: GroundingDINO and trajectory prompts condition SAM 2, with temporal propagation and human-in-the-loop refinement" loading="lazy" decoding="async">
+            <figcaption class="caption">
+                <strong>Trajectory-Grounded Label Generation.</strong> WayFASTER, GrandTour, and TartanDrive streams pass through the interactive label engine. Trajectory guidance grounds SAM 2 proposals in physical traversal evidence.
+            </figcaption>
+        </figure>
+    </div>
+
+    <!-- Results -->
+    <section class="container blog main research-section" aria-labelledby="results">
+        <h2 id="results">
+            Results
+        </h2>
+        <p class="text">CAT is evaluated against WayFAST and W-RIZZ on human traces and physically executed trajectories.</p>
+        <div class="result-strip" aria-label="Headline quantitative results">
+            <div class="result-card">
+                <span class="metric-value">0.945</span>
+                <span class="metric-label">Held-out AUROC<br><strong>+11.0%</strong> over W-RIZZ</span>
+            </div>
+            <div class="result-card">
+                <span class="metric-value">0.169</span>
+                <span class="metric-label">NaviTrace AUPRC<br><strong>+15.8%</strong> over WayFAST RGB-D</span>
+            </div>
+            <div class="result-card">
+                <span class="metric-value">+14.2%</span>
+                <span class="metric-label">Legged-path response<br>after switching profiles</span>
+            </div>
+        </div>
+        <details class="metric-note">
+            <summary>Evaluation notes</summary>
+            <p>Path-vs-Rest AUROC and AUPRC measure ranking against positive masks, not safety classification. Pixels outside a human trace or executed path are unobserved and may still be traversable.</p>
+        </details>
+    </section>
+
+    <figure class="container blog extra-large research-figure">
+        <img class="media-elevated" src="assets/figures/fig4.png" alt="Qualitative comparison of CAT against WayFAST and W-RIZZ traversability predictions on two NaviTrace scenes" loading="lazy" decoding="async">
+        <figcaption class="caption">
+            <strong>NaviTrace Qualitative Comparison.</strong> Columns show the RGB image, CAT, WayFAST RGB, WayFAST RGB-D, and W-RIZZ; blue indicates high traversability and red indicates low traversability. With the wheeled profile, CAT concentrates high scores on the rock passage and open pavement while suppressing surrounding structures.
+        </figcaption>
+    </figure>
+
+    <!-- Citation -->
+    <section class="container blog main research-section citation-section" aria-labelledby="citation" hidden>
+        <h2 id="citation">
+            Citation
+        </h2>
+<!-- TODO: confirm venue/year/pages before publishing -->
+<pre><code class="plaintext">@inproceedings{capezzuto2026cat,
+  title     = {Towards Capability-Aware Traversability Navigation for Unstructured Environments},
+  author    = {Capezzuto, Gianluca and Tommaselli, Felipe and Angarola, Matheus P. and Godoy, Ricardo V. and Becker, Marcelo},
+  booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year      = {2026}
+}</code></pre>
+
+    </section>
+
+    <section class="container blog main research-section acknowledgments-section" aria-labelledby="acknowledgments">
+        <h2 id="acknowledgments">Acknowledgments</h2>
+        <p class="acknowledgments-footnote">
+            This work was supported by the São Paulo Research Foundation (FAPESP), Grants #2025/22381-3, #2025/20858-7, and #2025/04308-7; and by Petróleo Brasileiro S/A – Petrobras, using resources from the ANP R&amp;D clause, in partnership with the University of São Paulo (USP) and the Fundação de Apoio à Física e à Química (FAFQ), under Cooperation Agreements #2023/00016-6 and #2023/00013-7.
+        </p>
+    </section>
+    </main>
+
+    <!-- Footer Page -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="template-credit">
+                This website adapts the <a href="https://shikun.io/projects/clarity">Clarity Template</a> by Shikun Liu and the <a href="https://github.com/RomanHauksson/academic-project-astro-template">Academic Project Astro Template</a> by Roman Hauksson.
+            </p>
+        </div>
+    </footer>
+
+    <script src="assets/scripts/main.js"></script>
+</body>
+</html>
