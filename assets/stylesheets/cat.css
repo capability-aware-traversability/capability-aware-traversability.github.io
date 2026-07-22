@@ -748,7 +748,6 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
   margin-left: auto !important;
   hyphens: none !important;
   overflow-wrap: normal;
-  text-align: left !important;
   word-break: normal;
 }
 
@@ -804,6 +803,11 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
 
 .results-subsection .table-wrapper {
   margin-top: 0.9rem;
+}
+
+.container.blog.results-subsection .table-wrapper + p.text {
+  margin: 0 !important;
+  padding-top: clamp(2rem, 3vw, 2.75rem) !important;
 }
 
 .table-wrapper.benchmark-results table {
