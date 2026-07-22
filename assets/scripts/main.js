@@ -1,35 +1,225 @@
 //* ======================== Slide Control ===================== */
 var contents = document.getElementsByClassName("slide-content");
 
+//* ================= Capability comparison ==================== */
+var COMPARE = {
+  profiles: { wheeled: 'Wheeled', legged: 'Legged', atv: 'ATV', differential: 'Differential' },
+  scenes: {
+    stairs: {
+      title: 'broad staircase',
+      def: ['wheeled', 'legged']
+    },
+    lawn: {
+      title: 'path and lawn',
+      def: ['wheeled', 'differential']
+    },
+    snow: {
+      title: 'snow crossing',
+      def: ['wheeled', 'atv']
+    },
+    street: {
+      title: 'shared street',
+      def: ['wheeled', 'legged']
+    }
+  }
+};
+function cmpSrc(scene, profile) { return 'assets/figures/compare/' + scene + '_' + profile + '.jpg'; }
+function cmpAlt(scene, profile) {
+  return COMPARE.profiles[profile] + ' profile: CAT traversability prediction for the ' +
+    COMPARE.scenes[scene].title + ' (blue = high traversability, red = low).';
+}
+
 window.addEventListener('DOMContentLoaded', function() {
   var comparisonSlider = document.querySelector('img-comparison-slider');
   if (!comparisonSlider) return;
 
-  // If the optional CDN component is unavailable, leave both labelled maps
-  // visible and replace the unusable interaction instruction with honest copy.
+  var leftImg = document.getElementById('compare-left');
+  var rightImg = document.getElementById('compare-right');
+  var leftLabel = document.getElementById('profile-label-left');
+  var rightLabel = document.getElementById('profile-label-right');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.scene-tab'));
+  var groups = {
+    left: document.querySelector('.profile-opts[data-side="left"]'),
+    right: document.querySelector('.profile-opts[data-side="right"]')
+  };
+  var state = { scene: 'stairs', left: 'wheeled', right: 'legged' };
+
+  function setGroupActive(side) {
+    if (!groups[side]) return;
+    var opts = groups[side].querySelectorAll('.profile-opt');
+    Array.prototype.forEach.call(opts, function(o) {
+      var on = o.getAttribute('data-profile') === state[side];
+      o.classList.toggle('is-active', on);
+      o.setAttribute('aria-checked', on ? 'true' : 'false');
+      o.tabIndex = on ? 0 : -1;
+    });
+  }
+
+  function render() {
+    var sc = state.scene;
+    leftImg.src = cmpSrc(sc, state.left);
+    leftImg.alt = cmpAlt(sc, state.left);
+    rightImg.src = cmpSrc(sc, state.right);
+    rightImg.alt = cmpAlt(sc, state.right);
+    if (leftLabel) leftLabel.textContent = COMPARE.profiles[state.left] + ' profile';
+    if (rightLabel) rightLabel.textContent = COMPARE.profiles[state.right] + ' profile';
+    comparisonSlider.setAttribute('aria-label',
+      'CAT traversability comparison: ' + COMPARE.profiles[state.left] +
+      ' profile on the left, ' + COMPARE.profiles[state.right] + ' profile on the right');
+    tabs.forEach(function(t) {
+      var on = t.getAttribute('data-scene') === sc;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    setGroupActive('left');
+    setGroupActive('right');
+  }
+
+  function selectScene(name) {
+    if (!COMPARE.scenes[name]) return;
+    state.scene = name;
+    state.left = COMPARE.scenes[name].def[0];
+    state.right = COMPARE.scenes[name].def[1];
+    render();
+  }
+
+  function selectProfile(side, profile) {
+    if (state[side] === profile) return;
+    var other = side === 'left' ? 'right' : 'left';
+    if (state[other] === profile) state[other] = state[side]; // swap to keep two distinct profiles
+    state[side] = profile;
+    render();
+  }
+
+  render();
+
+  tabs.forEach(function(t) {
+    t.addEventListener('click', function() { selectScene(t.getAttribute('data-scene')); });
+  });
+
+  ['left', 'right'].forEach(function(side) {
+    var g = groups[side];
+    if (!g) return;
+    var opts = Array.prototype.slice.call(g.querySelectorAll('.profile-opt'));
+    opts.forEach(function(o, i) {
+      o.addEventListener('click', function() { selectProfile(side, o.getAttribute('data-profile')); });
+      o.addEventListener('keydown', function(e) {
+        var idx = i;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') idx = (i + 1) % opts.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') idx = (i - 1 + opts.length) % opts.length;
+        else if (e.key === 'Home') idx = 0;
+        else if (e.key === 'End') idx = opts.length - 1;
+        else return;
+        e.preventDefault();
+        var target = opts[idx];
+        selectProfile(side, target.getAttribute('data-profile'));
+        target.focus();
+      });
+    });
+  });
+
+  // Fallback: component unavailable — show both maps side by side; scene/profile
+  // switching still works, only the drag affordance is dropped.
   if (!customElements.get('img-comparison-slider')) {
     comparisonSlider.classList.add('is-fallback');
     comparisonSlider.removeAttribute('tabindex');
-    comparisonSlider.removeAttribute('aria-label');
     comparisonSlider.removeAttribute('aria-describedby');
     var hint = document.getElementById('comparison-instructions');
-    if (hint) hint.textContent = 'Wheeled and legged predictions are shown side by side.';
+    if (hint) hint.textContent = 'The selected robot profiles are shown side by side.';
     return;
   }
 
-  // Keep the capability comparison usable without a pointer. The component
-  // exposes a numeric `value`, but does not provide arrow-key behavior.
+  // Keyboard support for the divider (the component exposes numeric `value`
+  // but no arrow-key behavior). A divider key press also ends the one-time
+  // nudge in-place, so the key's own value change is never stomped.
   comparisonSlider.addEventListener('keydown', function(e) {
     var nextValue = Number(comparisonSlider.value);
-
     if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') nextValue -= 2;
     else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') nextValue += 2;
     else if (e.key === 'Home') nextValue = 0;
     else if (e.key === 'End') nextValue = 100;
     else return;
-
     e.preventDefault();
+    userInteracted = true;
+    if (nudgeRAF) { cancelAnimationFrame(nudgeRAF); nudgeRAF = null; }
     comparisonSlider.value = Math.max(0, Math.min(100, nextValue));
+  });
+
+  // One-time discoverability nudge: a single gentle sweep of the divider the
+  // first time the comparison scrolls into view. Cancelled by any interaction,
+  // disabled under reduced-motion, and never loops.
+  var nudgeStarted = false, nudgeRAF = null, userInteracted = false;
+  function cancelNudge() {
+    userInteracted = true;
+    if (nudgeRAF) { cancelAnimationFrame(nudgeRAF); nudgeRAF = null; }
+    comparisonSlider.value = 50;
+  }
+  // Pointer/touch/focus snap the divider back to centre if a sweep is in
+  // progress. Keydown is handled in the divider keyboard listener above so it
+  // does not override the key's own value change.
+  ['pointerdown', 'touchstart', 'focus'].forEach(function(ev) {
+    comparisonSlider.addEventListener(ev, cancelNudge, { once: true });
+  });
+  function runNudge() {
+    if (nudgeStarted || userInteracted) return;
+    nudgeStarted = true;
+    var start = null, dur = 1150;
+    function frame(ts) {
+      if (userInteracted) return;
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      comparisonSlider.value = 50 + Math.sin(p * Math.PI * 2) * 12;
+      if (p < 1) { nudgeRAF = requestAnimationFrame(frame); }
+      else { comparisonSlider.value = 50; nudgeRAF = null; }
+    }
+    nudgeRAF = requestAnimationFrame(frame);
+  }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(en) {
+        if (en.isIntersecting && en.intersectionRatio >= 0.4) {
+          io.disconnect();
+          setTimeout(runNudge, 250);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(comparisonSlider);
+  }
+});
+
+//* ===================== Related Work Dropdown ===================== */
+window.addEventListener('DOMContentLoaded', function() {
+  var container = document.querySelector('.related-works');
+  if (!container) return;
+
+  var trigger = container.querySelector('.related-works-trigger');
+  var panel = container.querySelector('.related-works-panel');
+  var closeButton = container.querySelector('.related-works-close');
+
+  function setOpen(open, restoreFocus) {
+    panel.classList.toggle('is-open', open);
+    panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (!open && restoreFocus) trigger.focus();
+  }
+
+  trigger.addEventListener('click', function() {
+    setOpen(trigger.getAttribute('aria-expanded') !== 'true', false);
+  });
+
+  closeButton.addEventListener('click', function() {
+    setOpen(false, true);
+  });
+
+  document.addEventListener('click', function(event) {
+    if (!container.contains(event.target)) setOpen(false, false);
+  });
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+      setOpen(false, true);
+    }
   });
 });
 
