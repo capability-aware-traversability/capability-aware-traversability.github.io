@@ -229,19 +229,19 @@ if (slideMenu) {
     const idx = [...this.children]
       .filter(el => el.className.indexOf('dot') > -1)
       .indexOf(e.target);
-      
+
     if (idx >= 0) {
       var prev = document.querySelector(".dot.active");
       if (prev) prev.classList.remove("active");
       e.target.classList.add("active");
-      
+
       for (var i = 0; i < contents.length; i++) {
         if (i == idx) {
           contents[i].style.display = "block";
         } else {
           contents[i].style.display = "none";
         }
-      }  
+      }
     }
   });
 }
@@ -265,7 +265,7 @@ function SlowVideo(x) {
     videos[i].playbackRate = videos[i].playbackRate * 0.9;
     videos[i].play();
   }
-  
+
   var msg = document.getElementById(x + '-msg');
   msg.innerHTML = 'Speed: ' + '×' + videos[0].playbackRate.toFixed(2);
 
@@ -288,7 +288,7 @@ function FastVideo(x) {
   msg.classList.add("fade-in-out");
   msg.style.animation = 'none';
   msg.offsetHeight; /* trigger reflow */
-  msg.style.animation = null; 
+  msg.style.animation = null;
 };
 
 function RestartVideo(x) {
@@ -299,14 +299,14 @@ function RestartVideo(x) {
     videos[i].currentTime = 0;
     videos[i].play();
   }
-  
+
   var msg = document.getElementById(x + '-msg');
   msg.innerHTML = 'Speed: ' + '×' + videos[0].playbackRate.toFixed(2);
 
   msg.classList.add("fade-in-out");
   msg.style.animation = 'none';
   msg.offsetHeight; /* trigger reflow */
-  msg.style.animation = null; 
+  msg.style.animation = null;
 };
 
 //* ======================== Slide Show Control ===================== */
@@ -317,7 +317,7 @@ let interval;
 // Set positions
 const setPositions = () => {
     if (slider) {
-        [...slider.children].forEach((item, i) => 
+        [...slider.children].forEach((item, i) =>
             item.style.left = `${(i-1) * 440}px`);
     }
 };
@@ -330,7 +330,7 @@ if (slider) {
 // Set transition speed
 const setTransitionSpeed = (speed) => {
     if (slider) {
-        [...slider.children].forEach(item => 
+        [...slider.children].forEach(item =>
             item.style.transitionDuration = speed);
     }
 };
@@ -339,7 +339,7 @@ const setTransitionSpeed = (speed) => {
 const next = (isAuto = false) => {
     if (slider) {
         setTransitionSpeed(isAuto ? '1.5s' : '0.2s');
-        slider.appendChild(slider.firstElementChild); 
+        slider.appendChild(slider.firstElementChild);
         setPositions();
     }
 };
@@ -347,7 +347,7 @@ const next = (isAuto = false) => {
 const prev = () => {
     if (slider) {
         setTransitionSpeed('0.2s');
-        slider.prepend(slider.lastElementChild); 
+        slider.prepend(slider.lastElementChild);
         setPositions();
     }
 };
@@ -381,16 +381,16 @@ codeBlocks.forEach(function(pre) {
   button.setAttribute('aria-label', 'Copy citation to clipboard');
   button.innerHTML = '<i class="far fa-copy"></i><span class="copy-text"></span>';
   pre.appendChild(button);
-  
+
   // Add click handler for copy functionality
   button.addEventListener('click', function(e) {
     e.preventDefault();
-    
+
     // Get the code text from the code element
     var code = pre.querySelector('code');
     if (code) {
       var text = code.textContent;
-      
+
       // Copy to clipboard
       navigator.clipboard.writeText(text).then(function() {
           // Add copied class to show text (kept for animation)
