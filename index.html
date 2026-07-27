@@ -157,9 +157,9 @@
     <figure class="container blog extra-large robot-comparison" aria-labelledby="why-capability">
         <div class="scene-selector" role="group" aria-label="Choose a scene to compare">
             <button type="button" class="scene-tab is-active" data-scene="stairs" aria-pressed="true">Broad staircase</button>
-            <button type="button" class="scene-tab" data-scene="lawn" aria-pressed="false">Path and lawn</button>
+            <button type="button" class="scene-tab" data-scene="lawn" aria-pressed="false">Urban path and lawn</button>
             <button type="button" class="scene-tab" data-scene="snow" aria-pressed="false">Snow crossing</button>
-            <button type="button" class="scene-tab" data-scene="street" aria-pressed="false">Shared street</button>
+            <button type="button" class="scene-tab" data-scene="street" aria-pressed="false">Parking area</button>
         </div>
 
         <div class="profile-chooser">
@@ -193,10 +193,10 @@
         <div class="comparison-frame">
             <img-comparison-slider class="slider-container media-elevated media-comparison" tabindex="0" value="50" aria-label="CAT traversability comparison: Wheeled profile on the left, Legged profile on the right" aria-describedby="comparison-interpretation comparison-instructions">
                 <figure slot="first" class="before">
-                    <img id="compare-left" src="assets/figures/compare/stairs_wheeled.jpg" alt="Wheeled profile: CAT traversability prediction for the broad staircase (blue = high, red = low)." loading="lazy" decoding="async">
+                    <img id="compare-left" src="assets/figures/compare/robot-comparison-broad-staircase-wheeled.jpg" alt="Wheeled profile: CAT traversability prediction for the broad staircase (blue = high, red = low)." loading="lazy" decoding="async">
                 </figure>
                 <figure slot="second" class="after">
-                    <img id="compare-right" src="assets/figures/compare/stairs_legged.jpg" alt="Legged profile: CAT traversability prediction for the broad staircase (blue = high, red = low)." loading="lazy" decoding="async">
+                    <img id="compare-right" src="assets/figures/compare/robot-comparison-broad-staircase-legged.jpg" alt="Legged profile: CAT traversability prediction for the broad staircase (blue = high, red = low)." loading="lazy" decoding="async">
                 </figure>
                 <div slot="handle" class="compare-handle" aria-hidden="true">
                     <span class="compare-handle-btn"><i class="fa-solid fa-arrows-left-right"></i></span>
@@ -205,8 +205,6 @@
             <span class="profile-label profile-label--left" id="profile-label-left">Wheeled profile</span>
             <span class="profile-label profile-label--right" id="profile-label-right">Legged profile</span>
         </div>
-        <figcaption class="caption">Source scenes: <a href="https://leggedrobotics.github.io/navitrace_webpage/" target="_blank" rel="noopener">NaviTrace</a> by Windecker et&nbsp;al., used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a>. CAT traversability overlays were added.</figcaption>
-
     </figure>
 
     <!-- Custom capability vector (interactive, backed by the public HF Space) -->
@@ -221,7 +219,7 @@
                     <span class="cv-field-label" id="cv-scene-label">Scene</span>
                     <div class="cv-choice" data-group="scene" role="radiogroup" aria-labelledby="cv-scene-label">
                         <button type="button" class="cv-opt" role="radio" aria-checked="true" tabindex="0" data-value="stairs">Broad staircase</button>
-                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="lawn">Path and lawn</button>
+                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="lawn">Woodland trail</button>
                         <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="street">Shared street</button>
                         <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="plaza">Plaza steps</button>
                     </div>
@@ -268,11 +266,13 @@
                 <div class="cv-ramp" aria-hidden="true"><span>low</span><i class="cv-ramp-bar"></i><span>high</span></div>
 
                 <p class="cv-status" role="status" aria-live="polite" data-tone="idle">Ready.</p>
-                <p class="cv-readout"></p>
+                <p class="cv-readout" hidden></p>
                 <button type="button" class="cv-retry" hidden>Try again</button>
             </div>
         </div>
     </section>
+
+    <p class="container blog main figure-note demo-attribution">Scenes in both interactive demos&mdash;including the custom-vector examples&mdash;come from <a href="https://leggedrobotics.github.io/navitrace_webpage/" target="_blank" rel="noopener">NaviTrace</a> by Windecker et&nbsp;al., used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a>. CAT predictions and overlays were added; some scenes were cropped or resized.</p>
 
     <!-- Method (unified) -->
     <section class="container blog main research-section media-heading" aria-labelledby="method">

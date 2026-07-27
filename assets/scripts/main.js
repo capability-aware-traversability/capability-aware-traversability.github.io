@@ -8,6 +8,7 @@ var COMPARE = {
   scenes: {
     stairs: {
       title: 'broad staircase',
+      assetStem: 'robot-comparison-broad-staircase',
       def: ['wheeled', 'legged'],
       captions: {
         'wheeled|legged': 'The legged prediction extends across the staircase, while the wheeled prediction keeps the steps at low traversability.',
@@ -19,7 +20,8 @@ var COMPARE = {
       }
     },
     lawn: {
-      title: 'path and lawn',
+      title: 'urban path and lawn',
+      assetStem: 'robot-comparison-urban-path-lawn',
       def: ['wheeled', 'differential'],
       captions: {
         'wheeled|legged': 'The wheeled and legged predictions closely agree: both favor the paved path and road while keeping the stone blocks low.',
@@ -32,6 +34,7 @@ var COMPARE = {
     },
     snow: {
       title: 'snow crossing',
+      assetStem: 'robot-comparison-snow-crossing',
       def: ['wheeled', 'atv'],
       captions: {
         'wheeled|legged': 'The legged prediction opens a wider route across the snow, while the wheeled prediction favors the packed track.',
@@ -43,7 +46,8 @@ var COMPARE = {
       }
     },
     street: {
-      title: 'shared street',
+      title: 'parking area',
+      assetStem: 'robot-comparison-parking-area',
       def: ['wheeled', 'legged'],
       captions: {
         'wheeled|legged': 'The wheeled and legged predictions closely agree, tracing nearly the same high-traversability region across the open pavement.',
@@ -56,7 +60,9 @@ var COMPARE = {
     }
   }
 };
-function cmpSrc(scene, profile) { return 'assets/figures/compare/' + scene + '_' + profile + '.jpg'; }
+function cmpSrc(scene, profile) {
+  return 'assets/figures/compare/' + COMPARE.scenes[scene].assetStem + '-' + profile + '.jpg';
+}
 function cmpAlt(scene, profile) {
   return COMPARE.profiles[profile] + ' profile: CAT traversability prediction for the ' +
     COMPARE.scenes[scene].title + ' (blue = high traversability, red = low).';

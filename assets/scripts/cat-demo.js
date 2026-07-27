@@ -42,7 +42,7 @@ var CATDEMO = {
     wheeled: 'Wheeled', quadruped: 'Legged', ATV: 'ATV', differential: 'Differential'
   },
   sceneLabels: {
-    stairs: 'Broad staircase', lawn: 'Path and lawn',
+    stairs: 'Broad staircase', lawn: 'Woodland trail',
     street: 'Shared street', plaza: 'Plaza steps'
   },
   initialVector: [0.8, 1.0, 0.7, 0.3, 0.11, 0.0, 0.0, 0.0, 0.2, 0.0],
@@ -225,6 +225,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
     setBusy(true);
     retryBtn.hidden = true;
+    readoutEl.hidden = true;
+    readoutEl.textContent = '';
     setStatus('Connecting to the CAT demo…', 'busy');
 
     var wakeTimer = setTimeout(function() {
@@ -292,13 +294,14 @@ window.addEventListener('DOMContentLoaded', function() {
   }
 
   function renderReadout(result) {
-    var parts = ['Model output 224×224, resampled to the scene.'];
+    var text = '';
     if (result.metadata && typeof result.metadata.score_min === 'number') {
-      parts.unshift('Raw cosine scores span ' + result.metadata.score_min.toFixed(2) +
+      text = 'Raw cosine scores span ' + result.metadata.score_min.toFixed(2) +
         ' to ' + result.metadata.score_max.toFixed(2) +
-        ' (mean ' + result.metadata.score_mean.toFixed(2) + ').');
+        ' (mean ' + result.metadata.score_mean.toFixed(2) + ').';
     }
-    readoutEl.textContent = parts.join(' ');
+    readoutEl.textContent = text;
+    readoutEl.hidden = !text;
   }
 
   /* ---------- wiring ---------- */
