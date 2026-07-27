@@ -41,6 +41,9 @@
             .robot-comparison .scene-selector { display: none !important; }
             .robot-comparison .profile-chooser { display: none !important; }
             .robot-comparison #comparison-instructions { display: none !important; }
+            /* The custom-vector demo is inherently interactive; without JS it
+               degrades to a pointer at the hosted Space. */
+            .custom-vector .cv-grid { display: none !important; }
         </style>
     </noscript>
 </head>
@@ -93,6 +96,14 @@
                     </span>
                     <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
                 </a>
+                <a class="related-work-item" href="https://arxiv.org/abs/2510.26909" target="_blank" rel="noopener">
+                    <span class="related-work-copy">
+                        <strong>NaviTrace</strong>
+                        <span>Embodiment-aware visual navigation benchmark whose expert traces provide CAT's human-aligned evaluation.</span>
+                        <small>ICRA, 2026</small>
+                    </span>
+                    <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </aside>
@@ -103,7 +114,6 @@
             <div class="blog-intro">
                 <div>
                     <h1 class="title"><span class="title-line">Towards Capability-Aware Traversability Navigation</span><span class="title-line">for Unstructured Environments</span></h1>
-                    <p class="author hero-venue">IROS 2026</p>
                     <p class="author hero-authors">
                         Gianluca Capezzuto, Felipe Tommaselli, Matheus P. Angarola, Ricardo V. Godoy, Marcelo Becker
                     </p>
@@ -113,6 +123,7 @@
                     <p class="author hero-corresponding">
                         Corresponding author: <a href="mailto:gianlucacapezzuto@usp.br">gianlucacapezzuto@usp.br</a>
                     </p>
+                    <p class="author hero-venue"><span class="hero-venue-chip">IROS 2026</span></p>
                     <div class="info hero-links" aria-label="Project resources">
                         <a href="https://arxiv.org/pdf/2607.20679" class="button icon" target="_blank" rel="noopener" aria-label="Open the CAT paper PDF in a new tab">PDF <i class="fa-regular fa-file-pdf" aria-hidden="true"></i></a>
                         <a href="https://arxiv.org/abs/2607.20679" class="button icon" target="_blank" rel="noopener" aria-label="Open the CAT arXiv abstract page in a new tab">arXiv <span class="resource-icon arxiv-icon" aria-hidden="true"><img src="assets/icons/arxiv.svg" alt=""></span></a>
@@ -194,8 +205,74 @@
             <span class="profile-label profile-label--left" id="profile-label-left">Wheeled profile</span>
             <span class="profile-label profile-label--right" id="profile-label-right">Legged profile</span>
         </div>
+        <figcaption class="caption">Source scenes: <a href="https://leggedrobotics.github.io/navitrace_webpage/" target="_blank" rel="noopener">NaviTrace</a> by Windecker et&nbsp;al., used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a>. CAT traversability overlays were added.</figcaption>
 
     </figure>
+
+    <!-- Custom capability vector (interactive, backed by the public HF Space) -->
+    <section class="container blog extra-large research-section subsection custom-vector" id="custom-vector-demo" aria-labelledby="custom-vector">
+        <h3 id="custom-vector">Explore a Custom Capability Vector</h3>
+        <p class="text cv-lead">The four profiles above are the ones CAT was trained on. You can also write a vector by hand: each value states how suitable one terrain class is for the robot, from 0 (impassable) to 1 (fully traversable). CAT conditions the same fixed RGB-D observation on whatever profile you build, and the reference prototype selects which robot representation the traversability score is read out against. Nothing is sent until you press <span class="cv-inline-btn">Run CAT</span>.</p>
+        <p class="cv-exploration-note"><i class="fa-solid fa-flask" aria-hidden="true"></i><span><strong>A small heads-up:</strong> this custom-vector playground is here so you can poke at CAT&rsquo;s conditioning behavior. It isn&rsquo;t an extra result or claim from the paper.</span></p>
+
+        <div class="cv-grid">
+            <div class="cv-controls">
+                <div class="cv-field">
+                    <span class="cv-field-label" id="cv-scene-label">Scene</span>
+                    <div class="cv-choice" data-group="scene" role="radiogroup" aria-labelledby="cv-scene-label">
+                        <button type="button" class="cv-opt" role="radio" aria-checked="true" tabindex="0" data-value="stairs">Broad staircase</button>
+                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="lawn">Path and lawn</button>
+                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="street">Shared street</button>
+                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="plaza">Plaza steps</button>
+                    </div>
+                </div>
+
+                <div class="cv-field cv-field--vector">
+                    <span class="cv-field-label" id="cv-vector-label">Capability vector <span class="cv-field-note">0 impassable &rarr; 1 traversable</span></span>
+                    <ol class="cv-rows" aria-labelledby="cv-vector-label">
+                        <li class="cv-row"><label for="cv-slider-0">Grass</label><input type="range" id="cv-slider-0" min="0" max="1" step="0.01" value="0.8"><output id="cv-value-0" for="cv-slider-0" aria-hidden="true">0.80</output></li>
+                        <li class="cv-row"><label for="cv-slider-1">Pavement</label><input type="range" id="cv-slider-1" min="0" max="1" step="0.01" value="1"><output id="cv-value-1" for="cv-slider-1" aria-hidden="true">1.00</output></li>
+                        <li class="cv-row"><label for="cv-slider-2">Dirt / gravel</label><input type="range" id="cv-slider-2" min="0" max="1" step="0.01" value="0.7"><output id="cv-value-2" for="cv-slider-2" aria-hidden="true">0.70</output></li>
+                        <li class="cv-row"><label for="cv-slider-3">Rocks</label><input type="range" id="cv-slider-3" min="0" max="1" step="0.01" value="0.3"><output id="cv-value-3" for="cv-slider-3" aria-hidden="true">0.30</output></li>
+                        <li class="cv-row"><label for="cv-slider-4">Vegetation</label><input type="range" id="cv-slider-4" min="0" max="1" step="0.01" value="0.11"><output id="cv-value-4" for="cv-slider-4" aria-hidden="true">0.11</output></li>
+                        <li class="cv-row"><label for="cv-slider-5">Building wall</label><input type="range" id="cv-slider-5" min="0" max="1" step="0.01" value="0"><output id="cv-value-5" for="cv-slider-5" aria-hidden="true">0.00</output></li>
+                        <li class="cv-row"><label for="cv-slider-6">Water</label><input type="range" id="cv-slider-6" min="0" max="1" step="0.01" value="0"><output id="cv-value-6" for="cv-slider-6" aria-hidden="true">0.00</output></li>
+                        <li class="cv-row"><label for="cv-slider-7">Stairs</label><input type="range" id="cv-slider-7" min="0" max="1" step="0.01" value="0"><output id="cv-value-7" for="cv-slider-7" aria-hidden="true">0.00</output></li>
+                        <li class="cv-row"><label for="cv-slider-8">Snow</label><input type="range" id="cv-slider-8" min="0" max="1" step="0.01" value="0.2"><output id="cv-value-8" for="cv-slider-8" aria-hidden="true">0.20</output></li>
+                        <li class="cv-row"><label for="cv-slider-9">Sky</label><input type="range" id="cv-slider-9" min="0" max="1" step="0.01" value="0"><output id="cv-value-9" for="cv-slider-9" aria-hidden="true">0.00</output></li>
+                    </ol>
+                </div>
+
+                <div class="cv-field">
+                    <span class="cv-field-label" id="cv-proto-label">Reference prototype</span>
+                    <div class="cv-choice" data-group="prototype" role="radiogroup" aria-labelledby="cv-proto-label">
+                        <button type="button" class="cv-opt" role="radio" aria-checked="true" tabindex="0" data-value="wheeled">Wheeled</button>
+                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="quadruped">Legged</button>
+                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="ATV">ATV</button>
+                        <button type="button" class="cv-opt" role="radio" aria-checked="false" tabindex="-1" data-value="differential">Differential</button>
+                    </div>
+                </div>
+
+                <div class="cv-actions">
+                    <button type="button" class="cv-reset">Reset</button>
+                    <button type="button" class="cv-run">Run CAT</button>
+                </div>
+            </div>
+
+            <div class="cv-result">
+                <div class="cv-stage">
+                    <img class="cv-stage-img" alt="" decoding="async">
+                    <p class="cv-placeholder">Set a capability vector, then press Run CAT to see the prediction for this scene.</p>
+                </div>
+
+                <div class="cv-ramp" aria-hidden="true"><span>low</span><i class="cv-ramp-bar"></i><span>high</span></div>
+
+                <p class="cv-status" role="status" aria-live="polite" data-tone="idle">Ready.</p>
+                <p class="cv-readout"></p>
+                <button type="button" class="cv-retry" hidden>Try again</button>
+            </div>
+        </div>
+    </section>
 
     <!-- Method (unified) -->
     <section class="container blog main research-section media-heading" aria-labelledby="method">
@@ -405,5 +482,6 @@
     </footer>
 
     <script src="assets/scripts/main.js"></script>
+    <script src="assets/scripts/cat-demo.js"></script>
 </body>
 </html>

@@ -365,11 +365,46 @@ div.container.blog#first-content div.blog-title .blog-intro p.hero-corresponding
   text-decoration: underline;
 }
 
+/* The venue closes the author block. Prominence comes from figure-ground
+   contrast rather than added ornament: it is the only saturated element in
+   the hero, so it survives the squint test without competing with the title. */
+/* Lateral presence comes from a hairline that spans the measure; the pill
+   interrupts it. The rule reads at hero scale while the saturated ink stays
+   confined to the two words that carry information. */
 div.container.blog#first-content div.blog-title .blog-intro p.hero-venue {
-  margin-top: 0.8rem;
-  color: var(--cat-ink);
-  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  display: flex;
+  gap: clamp(0.85rem, 2vw, 1.5rem);
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(1.15rem, 2.4vw, 1.75rem);
+}
+
+div.container.blog#first-content div.blog-title .blog-intro p.hero-venue::before,
+div.container.blog#first-content div.blog-title .blog-intro p.hero-venue::after {
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--cat-rule) 85%);
+  content: "";
+}
+
+div.container.blog#first-content div.blog-title .blog-intro p.hero-venue::after {
+  background: linear-gradient(to left, transparent, var(--cat-rule) 85%);
+}
+
+.hero-venue-chip {
+  flex: 0 0 auto;
+  /* Right padding is trimmed by one letter-space so the tracking does not
+     push the text off-centre inside the pill. */
+  padding: 0.8em 1.4em 0.8em 1.6em;
+  border-radius: 999px;
+  background: var(--cat-blue);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.76rem, 1.3vw, 0.92rem);
   font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
@@ -910,6 +945,11 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
   text-justify: inter-word;
 }
 
+.container.blog figcaption.caption a {
+  font-size: inherit;
+  line-height: inherit;
+}
+
 .robot-comparison .columns-2,
 .robot-comparison .table-wrapper {
   box-shadow: none;
@@ -1250,6 +1290,11 @@ footer.site-footer .template-credit a {
     letter-spacing: -0.03em;
   }
 
+  .hero-venue-chip {
+    padding: 0.72em 1.1em 0.72em 1.26em;
+    letter-spacing: 0.16em;
+  }
+
   .hero-links .button {
     min-height: 2.35rem;
     padding: 0.65em 0.85em;
@@ -1514,4 +1559,386 @@ footer.site-footer .template-credit a {
   .profile-side { flex-direction: column; align-items: stretch; gap: 0.25rem; }
   .profile-opts { width: 100%; }
   .profile-opt { flex: 1 1 0; padding: 0.42rem 0.3rem; font-size: 0.74rem; text-align: center; }
+}
+
+/* ================= Custom capability vector demo =================
+   Reads as a continuation of the comparison above: same Poppins control
+   typography, same rule/ink/blue palette, same focus treatment. The controls
+   are deliberately low-ink — hairline rules and a single filled track per
+   terrain row rather than boxed cards — so the ten-row capability vector reads
+   as one small-multiple chart that happens to be editable. */
+.custom-vector {
+  max-width: var(--cat-content);
+  margin-right: auto;
+  margin-left: auto;
+}
+.custom-vector .cv-lead {
+  margin-bottom: 0.65rem;
+}
+.cv-inline-btn {
+  font-weight: 600;
+  color: var(--cat-ink);
+  white-space: nowrap;
+}
+.cv-exploration-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 0 0 1.6rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--cat-rule);
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.cv-exploration-note i {
+  flex: 0 0 auto;
+  margin-top: 0.2em;
+  color: var(--cat-blue);
+}
+.cv-exploration-note strong {
+  color: var(--cat-ink);
+  font-weight: 600;
+}
+
+.cv-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 19rem) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ---- controls ---- */
+.cv-field + .cv-field {
+  margin-top: 1.15rem;
+}
+/* The template stylesheet sets `display: flex` on buttons, which outranks the
+   user-agent `[hidden] { display: none }` rule, so hidden controls inside this
+   section have to be re-hidden explicitly. */
+#custom-vector-demo [hidden] { display: none !important; }
+
+.cv-field-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.1rem 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--cat-rule);
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cv-field-note {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.cv-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 0.6rem;
+  border: 1px solid var(--cat-rule);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+.cv-opt {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.42rem 0.5rem;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--cat-rule);
+  border-left: 1px solid var(--cat-rule);
+  border-radius: 0;
+  background: #fff;
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.cv-choice > .cv-opt:nth-child(-n+2) { border-top: 0; }
+.cv-choice > .cv-opt:nth-child(odd) { border-left: 0; }
+.cv-opt:hover { color: var(--cat-ink); }
+.cv-opt.is-active {
+  background: var(--cat-ink);
+  color: #fff;
+}
+.cv-opt:focus-visible {
+  outline: 2px solid var(--cat-blue);
+  outline-offset: -2px;
+}
+
+/* ---- capability vector rows ---- */
+.cv-rows {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.cv-row {
+  display: grid;
+  grid-template-columns: 7.2rem minmax(0, 1fr) 2.4rem;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #eceded;
+}
+.cv-row:last-child { border-bottom: 0; }
+.cv-row label {
+  color: var(--cat-ink);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.cv-row output {
+  color: var(--cat-ink);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* The track carries the data: filled portion in CAT blue up to the value,
+   rule grey beyond it. --cv-fill is set per row from JS. */
+.cv-row input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.1rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  --cv-fill: 0%;
+}
+.cv-row input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to right,
+    var(--cat-blue) 0 var(--cv-fill), var(--cat-rule) var(--cv-fill) 100%);
+}
+.cv-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  margin-top: -4px;
+  border: 1.5px solid var(--cat-ink);
+  border-radius: 2px;
+  background: #fff;
+}
+.cv-row input[type="range"]::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--cat-rule);
+}
+.cv-row input[type="range"]::-moz-range-progress {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--cat-blue);
+}
+.cv-row input[type="range"]::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--cat-ink);
+  border-radius: 2px;
+  background: #fff;
+}
+.cv-row input[type="range"]:focus-visible {
+  outline: 2px solid var(--cat-blue);
+  outline-offset: 2px;
+}
+
+/* ---- actions ---- */
+.cv-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.15rem;
+}
+.cv-reset,
+.cv-run,
+.cv-retry {
+  padding: 0.46rem 0.9rem;
+  border: 1px solid var(--cat-rule);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.cv-reset:hover,
+.cv-retry:hover {
+  border-color: var(--cat-ink);
+  color: var(--cat-ink);
+}
+.cv-run {
+  flex: 1 1 auto;
+  border-color: var(--cat-blue);
+  background: var(--cat-blue);
+  color: #fff;
+  font-weight: 600;
+}
+.cv-run:hover:not(:disabled) {
+  border-color: var(--cat-blue-dark);
+  background: var(--cat-blue-dark);
+}
+.cv-run:disabled {
+  border-color: var(--cat-rule);
+  background: var(--cat-rule);
+  color: var(--cat-muted);
+  cursor: default;
+}
+.cv-reset:focus-visible,
+.cv-run:focus-visible,
+.cv-retry:focus-visible {
+  outline: 2px solid var(--cat-blue);
+  outline-offset: 2px;
+}
+
+/* ---- result ---- */
+.cv-result {
+  padding-left: 2rem;
+  border-left: 1px solid var(--cat-rule);
+}
+/* Fixed 4:3 box: every curated scene is 1365x1024, so the result area is
+   reserved before the first run and never shifts the page. */
+.cv-stage {
+  position: relative;
+  aspect-ratio: 1365 / 1024;
+  border: 1px solid var(--cat-rule);
+  border-radius: var(--cat-radius);
+  background: #fbfbfc;
+  overflow: hidden;
+}
+.cv-stage-img {
+  display: none;
+  width: 100%;
+  height: 100%;
+  /* `fill` is correct, not a distortion: the raw 224x224 score map is what the
+     Space itself stretches to the native frame when it builds the overlay, so
+     the heatmap view lines up with the overlay pixel for pixel. */
+  object-fit: fill;
+}
+#custom-vector-demo[data-has-result="true"] .cv-stage-img { display: block; }
+.cv-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(22rem, 80%);
+  margin: 0;
+  transform: translate(-50%, -50%);
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Direct-labelled ramp instead of a legend box; stops are the RdYlBu scale the
+   Space actually renders with. */
+.cv-ramp {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.7rem;
+}
+.cv-ramp-bar {
+  flex: 1 1 auto;
+  height: 5px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #d73027, #f46d43, #fdae61, #fee090,
+    #ffffbf, #e0f3f8, #abd9e9, #74add1, #4575b4);
+}
+
+.cv-status {
+  margin: 0.7rem 0 0;
+  color: var(--cat-ink);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+/* The glyph, not the colour, carries the state — colour is reinforcement. */
+.cv-status::before {
+  margin-right: 0.4rem;
+  font-weight: 600;
+}
+.cv-status[data-tone="idle"] { color: var(--cat-muted); }
+.cv-status[data-tone="idle"]::before { content: "·"; }
+.cv-status[data-tone="busy"] { color: var(--cat-muted); }
+.cv-status[data-tone="busy"]::before { content: "▸"; }
+.cv-status[data-tone="ok"]::before { content: "✓"; color: var(--cat-blue); }
+.cv-status[data-tone="error"] { color: var(--cat-red); }
+.cv-status[data-tone="error"]::before { content: "!"; }
+
+.cv-readout {
+  margin: 0.3rem 0 0;
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+.cv-retry {
+  margin: 0.9rem 0 0;
+  padding: 0.34rem 0.7rem;
+  font-size: 0.76rem;
+}
+
+@media screen and (max-width: 900px) {
+  .cv-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .cv-result {
+    padding-top: 1.5rem;
+    padding-left: 0;
+    border-top: 1px solid var(--cat-rule);
+    border-left: 0;
+  }
+}
+
+/* Stacked but roomy: the controls column is now full width, so the segmented
+   groups read better as one dense row than as two stretched halves. */
+@media screen and (min-width: 521px) and (max-width: 900px) {
+  .cv-choice { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cv-choice > .cv-opt { border-top: 0; border-left: 1px solid var(--cat-rule); }
+  .cv-choice > .cv-opt:first-child { border-left: 0; }
+}
+
+@media screen and (max-width: 520px) {
+  .cv-row {
+    grid-template-columns: 6.2rem minmax(0, 1fr) 2.2rem;
+    padding: 0.3rem 0;
+  }
+  .cv-row label { font-size: 0.74rem; }
+  /* Larger touch target; the visible 3px track is unchanged. */
+  .cv-row input[type="range"] { height: 1.6rem; }
+  .cv-row input[type="range"]::-webkit-slider-thumb { width: 13px; height: 13px; margin-top: -5px; }
+  .cv-row input[type="range"]::-moz-range-thumb { width: 13px; height: 13px; }
+  .cv-actions { flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cv-opt,
+  .cv-reset,
+  .cv-run,
+  .cv-retry {
+    transition: none;
+  }
 }
