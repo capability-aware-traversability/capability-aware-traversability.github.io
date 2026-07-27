@@ -945,8 +945,7 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
   text-justify: inter-word;
 }
 
-.container.blog figcaption.caption a,
-.container.blog .figure-note a {
+.container.blog figcaption.caption a {
   font-size: inherit;
   line-height: inherit;
 }
@@ -995,8 +994,7 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
   position: relative;
 }
 
-.interaction-hint,
-.figure-note {
+.interaction-hint {
   max-width: var(--cat-content);
   margin-right: auto;
   margin-left: auto;
@@ -1033,11 +1031,6 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
 @keyframes comparison-caption-settle {
   from { opacity: 0.55; }
   to { opacity: 1; }
-}
-
-.figure-note {
-  margin-top: 1rem;
-  margin-bottom: 0;
 }
 
 .table-wrapper {
@@ -1575,6 +1568,21 @@ footer.site-footer .template-credit a {
 }
 .custom-vector .cv-lead {
   margin-bottom: 0.65rem;
+}
+.custom-vector .demo-attribution {
+  margin: 0.85rem 0 0;
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  text-align: left;
+}
+.custom-vector .demo-attribution a {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
 }
 .cv-inline-btn {
   font-weight: 600;
