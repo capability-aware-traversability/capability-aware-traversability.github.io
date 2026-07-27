@@ -4,22 +4,55 @@ var contents = document.getElementsByClassName("slide-content");
 //* ================= Capability comparison ==================== */
 var COMPARE = {
   profiles: { wheeled: 'Wheeled', legged: 'Legged', atv: 'ATV', differential: 'Differential' },
+  profileOrder: ['wheeled', 'legged', 'atv', 'differential'],
   scenes: {
     stairs: {
       title: 'broad staircase',
-      def: ['wheeled', 'legged']
+      def: ['wheeled', 'legged'],
+      captions: {
+        'wheeled|legged': 'The legged prediction extends across the staircase, while the wheeled prediction keeps the steps at low traversability.',
+        'wheeled|atv': 'The wheeled and ATV predictions closely agree, favoring the paved route while keeping the staircase at low traversability.',
+        'wheeled|differential': 'Both predictions favor the paved route and keep the staircase low, with the wheeled prediction slightly stronger across the pavement.',
+        'legged|atv': 'The legged prediction extends across the staircase, while the ATV prediction confines high traversability to the paved route.',
+        'legged|differential': 'The legged prediction covers the staircase, while the differential prediction limits high traversability to the paved route.',
+        'atv|differential': 'The ATV and differential predictions trace the same paved route, while the ATV prediction assigns higher traversability across the foreground pavement.'
+      }
     },
     lawn: {
       title: 'path and lawn',
-      def: ['wheeled', 'differential']
+      def: ['wheeled', 'differential'],
+      captions: {
+        'wheeled|legged': 'The wheeled and legged predictions closely agree: both favor the paved path and road while keeping the stone blocks low.',
+        'wheeled|atv': 'The wheeled and ATV predictions nearly coincide, favoring pavement over grass and keeping both stone blocks low.',
+        'wheeled|differential': 'The wheeled prediction keeps more of the lawn near the path traversable, while the differential prediction lowers the grass.',
+        'legged|atv': 'The legged and ATV predictions closely agree, favoring the path and road while leaving both stone blocks low.',
+        'legged|differential': 'The legged prediction rates the lawn beside the path higher, while the differential prediction lowers the surrounding grass.',
+        'atv|differential': 'The ATV prediction rates the grass beside the path higher, while the differential prediction narrows the favored area to pavement.'
+      }
     },
     snow: {
       title: 'snow crossing',
-      def: ['wheeled', 'atv']
+      def: ['wheeled', 'atv'],
+      captions: {
+        'wheeled|legged': 'The legged prediction opens a wider route across the snow, while the wheeled prediction favors the packed track.',
+        'wheeled|atv': 'The ATV prediction extends high traversability across the churned snow, while the wheeled prediction concentrates it on the packed track.',
+        'wheeled|differential': 'The wheeled and differential predictions both favor the packed track, with lower traversability across the churned snow to its left.',
+        'legged|atv': 'The legged and ATV predictions both open a broad high-traversability region across the churned foreground snow.',
+        'legged|differential': 'The legged prediction opens a wider route across the snow, while the differential prediction favors the packed track.',
+        'atv|differential': 'The ATV prediction spans the churned snow, while the differential prediction concentrates high traversability along the packed track.'
+      }
     },
     street: {
       title: 'shared street',
-      def: ['wheeled', 'legged']
+      def: ['wheeled', 'legged'],
+      captions: {
+        'wheeled|legged': 'The wheeled and legged predictions closely agree, tracing nearly the same high-traversability region across the open pavement.',
+        'wheeled|atv': 'The wheeled and ATV predictions closely agree, tracing nearly the same high-traversability region across the open pavement.',
+        'wheeled|differential': 'Both predictions cover the open pavement, but the wheeled prediction assigns higher traversability across the foreground road.',
+        'legged|atv': 'The legged and ATV predictions closely agree, tracing nearly the same high-traversability region across the open pavement.',
+        'legged|differential': 'Both predictions cover the open pavement, but the legged prediction assigns higher traversability across the foreground road.',
+        'atv|differential': 'Both predictions cover the open pavement, but the ATV prediction assigns higher traversability across the foreground road.'
+      }
     }
   }
 };
@@ -27,6 +60,14 @@ function cmpSrc(scene, profile) { return 'assets/figures/compare/' + scene + '_'
 function cmpAlt(scene, profile) {
   return COMPARE.profiles[profile] + ' profile: CAT traversability prediction for the ' +
     COMPARE.scenes[scene].title + ' (blue = high traversability, red = low).';
+}
+function cmpPair(left, right) {
+  return [left, right].sort(function(a, b) {
+    return COMPARE.profileOrder.indexOf(a) - COMPARE.profileOrder.indexOf(b);
+  }).join('|');
+}
+function cmpCaption(scene, left, right) {
+  return COMPARE.scenes[scene].captions[cmpPair(left, right)];
 }
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -37,6 +78,7 @@ window.addEventListener('DOMContentLoaded', function() {
   var rightImg = document.getElementById('compare-right');
   var leftLabel = document.getElementById('profile-label-left');
   var rightLabel = document.getElementById('profile-label-right');
+  var interpretation = document.getElementById('comparison-interpretation');
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.scene-tab'));
   var groups = {
     left: document.querySelector('.profile-opts[data-side="left"]'),
@@ -63,6 +105,15 @@ window.addEventListener('DOMContentLoaded', function() {
     rightImg.alt = cmpAlt(sc, state.right);
     if (leftLabel) leftLabel.textContent = COMPARE.profiles[state.left] + ' profile';
     if (rightLabel) rightLabel.textContent = COMPARE.profiles[state.right] + ' profile';
+    if (interpretation) {
+      var nextCaption = cmpCaption(sc, state.left, state.right);
+      if (interpretation.textContent !== nextCaption) {
+        interpretation.textContent = nextCaption;
+        interpretation.classList.remove('is-updating');
+        void interpretation.offsetWidth;
+        interpretation.classList.add('is-updating');
+      }
+    }
     comparisonSlider.setAttribute('aria-label',
       'CAT traversability comparison: ' + COMPARE.profiles[state.left] +
       ' profile on the left, ' + COMPARE.profiles[state.right] + ' profile on the right');
@@ -125,7 +176,7 @@ window.addEventListener('DOMContentLoaded', function() {
     comparisonSlider.removeAttribute('tabindex');
     comparisonSlider.removeAttribute('aria-describedby');
     var hint = document.getElementById('comparison-instructions');
-    if (hint) hint.textContent = 'The selected robot profiles are shown side by side.';
+    if (hint) hint.textContent = 'Select a scene or robot profile to update the comparison.';
     return;
   }
 

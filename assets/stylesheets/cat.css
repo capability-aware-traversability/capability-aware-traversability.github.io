@@ -971,6 +971,29 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
   text-align: center;
 }
 
+.comparison-interpretation {
+  display: flex;
+  min-block-size: 3em;
+  max-width: var(--cat-content);
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.35rem;
+  color: var(--cat-ink);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.comparison-interpretation.is-updating {
+  animation: comparison-caption-settle 160ms ease-out;
+}
+
+@keyframes comparison-caption-settle {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+
 .figure-note {
   margin-top: 1rem;
   margin-bottom: 0;
@@ -1463,8 +1486,10 @@ footer.site-footer .template-credit a {
   }
 
   .scene-tab,
-  .profile-opt {
+  .profile-opt,
+  .comparison-interpretation.is-updating {
     transition: none;
+    animation: none;
   }
 }
 
@@ -1476,6 +1501,10 @@ footer.site-footer .template-credit a {
   .profile-label {
     font-size: 0.68rem;
     padding: 0.24rem 0.5rem;
+  }
+  .comparison-interpretation {
+    min-block-size: 6em;
+    font-size: 0.9rem;
   }
 }
 
