@@ -840,7 +840,8 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
   margin-top: 0.9rem;
 }
 
-.container.blog.results-subsection .table-wrapper + p.text {
+.container.blog.results-subsection .table-wrapper + p.text,
+.container.blog.results-subsection .table-legend + p.text {
   margin: 0 !important;
   padding-top: clamp(2rem, 3vw, 2.75rem) !important;
 }
@@ -889,7 +890,29 @@ div.container.blog#first-content div.blog-title .blog-intro .info.hero-links {
 
 .benchmark-results .table-second {
   color: var(--cat-ink);
+  font-weight: 400;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+}
+
+.results-subsection .table-legend {
+  max-width: var(--cat-content);
+  margin: 0.55rem auto 0;
+  color: var(--cat-muted);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.results-subsection .table-legend strong {
+  color: var(--cat-ink);
   font-weight: 700;
+}
+
+.results-subsection .table-legend u {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
 }
 
 .compact-results .ablation-component {

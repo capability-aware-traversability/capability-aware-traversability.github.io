@@ -10,7 +10,7 @@
     <meta name="description" content="CAT predicts dense traversability maps conditioned on the target robot's capabilities.">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="robots" content="all">
-    <meta content="en_EN" property="og:locale">
+    <meta content="en_GB" property="og:locale">
     <meta content="website" property="og:type">
     <meta content="CAT: Capability-Aware Traversability" property="og:title">
     <meta content="CAT predicts dense traversability maps conditioned on the target robot's capabilities." property="og:description">
@@ -191,7 +191,7 @@
         <p class="interaction-hint" id="comparison-instructions">Drag the divider &mdash; or focus it and use the arrow keys &mdash; to compare the two selected profiles.</p>
 
         <div class="comparison-frame">
-            <img-comparison-slider class="slider-container media-elevated media-comparison" tabindex="0" value="50" aria-label="CAT traversability comparison: Wheeled profile on the left, Legged profile on the right" aria-describedby="comparison-interpretation comparison-instructions">
+            <img-comparison-slider class="slider-container media-elevated media-comparison" tabindex="0" value="50" keyboard="disabled" aria-label="CAT traversability comparison: Wheeled profile on the left, Legged profile on the right" aria-describedby="comparison-interpretation comparison-instructions">
                 <figure slot="first" class="before">
                     <img id="compare-left" src="assets/figures/compare/robot-comparison-broad-staircase-wheeled.jpg" alt="Wheeled profile: CAT traversability prediction for the broad staircase (blue = high, red = low)." loading="lazy" decoding="async">
                 </figure>
@@ -409,6 +409,7 @@
                 </tbody>
             </table>
         </div>
+        <p class="table-legend"><strong>Bold</strong> marks the best result per column; <u>underline</u> marks the second best.</p>
         <p class="text">CAT provides the strongest overall path alignment across both evaluation distributions. The qualitative examples show the same pattern. In the rocky passage, CAT confines high traversability to the corridor instead of the surrounding walls. In the urban scene, it preserves a continuous path along the open pavement while suppressing the pedestrian, barriers, and adjacent structures. The baselines either spill onto surrounding surfaces or recover only fragmented paths.</p>
     </section>
 

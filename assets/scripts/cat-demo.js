@@ -286,7 +286,7 @@ window.addEventListener('DOMContentLoaded', function() {
       // stack trace or a raw Gradio event.
       setStatus((err && err.message === 'backend')
         ? 'The demo returned an error. Your settings are kept — try again.'
-        : 'The demo is temporarily unavailable. Your settings are kept — try again, or open the full Space.',
+        : 'The demo is temporarily unavailable. Your settings are kept — try again.',
         'error');
       retryBtn.hidden = false;
       setBusy(false);

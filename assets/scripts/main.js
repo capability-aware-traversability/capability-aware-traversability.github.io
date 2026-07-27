@@ -186,8 +186,9 @@ window.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // Keyboard support for the divider (the component exposes numeric `value`
-  // but no arrow-key behavior). A divider key press also ends the one-time
+  // Keyboard support for the divider (the component's own arrow-key handler
+  // is disabled via keyboard="disabled" so this is the single source of
+  // keyboard behavior). A divider key press also ends the one-time
   // nudge in-place, so the key's own value change is never stomped.
   comparisonSlider.addEventListener('keydown', function(e) {
     var nextValue = Number(comparisonSlider.value);
@@ -208,8 +209,11 @@ window.addEventListener('DOMContentLoaded', function() {
   var nudgeStarted = false, nudgeRAF = null, userInteracted = false;
   function cancelNudge() {
     userInteracted = true;
-    if (nudgeRAF) { cancelAnimationFrame(nudgeRAF); nudgeRAF = null; }
-    comparisonSlider.value = 50;
+    if (nudgeRAF) {
+      cancelAnimationFrame(nudgeRAF);
+      nudgeRAF = null;
+      comparisonSlider.value = 50;
+    }
   }
   // Pointer/touch/focus snap the divider back to centre if a sweep is in
   // progress. Keydown is handled in the divider keyboard listener above so it
